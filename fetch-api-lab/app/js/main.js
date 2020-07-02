@@ -29,6 +29,11 @@ function logError(error) {
 
 function fetchJSON() {
   // TODO
+  fetch('examples/animals.json')
+  .then(validateResponse)
+  .then(readResponseAsJSON)
+  .then(logResult)
+  .catch(logError)
 }
 const jsonButton = document.getElementById('json-btn');
 jsonButton.addEventListener('click', fetchJSON);
@@ -69,3 +74,15 @@ function postRequest() {
 }
 const postButton = document.getElementById('post-btn');
 postButton.addEventListener('click', postRequest);
+
+function validateResponse(response) {
+  if(!response.ok) {
+    throw Error(response.statusText);
+  }
+
+  return response
+}
+
+function readResponseAsJSON(response) {
+  return response.json();
+}
