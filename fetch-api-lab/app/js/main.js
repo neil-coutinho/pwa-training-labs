@@ -55,7 +55,11 @@ imgButton.addEventListener('click', fetchImage);
 // Fetch text ----------
 
 function fetchText() {
-  // TODO
+  fetch('examples/words.txt')
+  .then(validateResponse)
+  .then(getText)
+  .then(showText)
+  .catch(logError)
 }
 const textButton = document.getElementById('text-btn');
 textButton.addEventListener('click', fetchText);
@@ -64,7 +68,13 @@ textButton.addEventListener('click', fetchText);
 // HEAD request ----------
 
 function headRequest() {
-  // TODO
+  fetch('examples/words.txt', {
+    method: 'HEAD'
+  })
+  .then(validateResponse)
+  .then(getText)
+  .then(showText)
+  .catch(logError)
 }
 const headButton = document.getElementById('head-btn');
 headButton.addEventListener('click', headRequest);
@@ -74,7 +84,26 @@ headButton.addEventListener('click', headRequest);
 
 /* NOTE: Never send unencrypted user credentials in production! */
 function postRequest() {
-  // TODO
+
+  let formData = new FormData(document.getElementById('msg-form'));
+  console.log({formData});
+  
+  fetch('http://localhost:5001/', {
+    method: 'POST',
+    body: formData,
+    mode: 'no-cors'
+  })
+ // .then(validateResponse)
+  //.then(getText)
+  //.then(showText)
+  .then(logResult)
+  .catch(logError)
+
+
+
+
+
+
 }
 const postButton = document.getElementById('post-btn');
 postButton.addEventListener('click', postRequest);
@@ -108,4 +137,18 @@ function showImage(blob) {
   console.log(src);
 
   img.src = src;
+}
+
+function getText(response) {
+  console.log(response.headers)
+  return response.text()
+}
+
+function showText(text) {
+  console.log(text);
+  const pTag = document.querySelector('#message');
+ 
+  pTag.textContent = text;
+  return
+
 }
