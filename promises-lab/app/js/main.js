@@ -51,16 +51,29 @@ const app = (() => {
   function flagChain(country) {
 
     return getImageName(country)
-    .then(logSuccess, logError)
-    //.catch(logError)
+    .then(fetchFlag)
+    .then(processFlag)
+    .then(appendFlag)
+    .catch(logError); 
 
   }
+
+  let promises = [
+    getImageName('Spain'),
+    getImageName('Chile'),
+    getImageName('Peru')
+  ];
 
   function allFlags(promiseList) {
 
     // use promise.all
+    return Promise.all(promiseList);
 
   }
+
+  allFlags(promises).then(logSuccess).catch(logError)
+
+  
 
 
   // call the allFlags function
@@ -106,6 +119,9 @@ const app = (() => {
   function fallbackName() {
     return 'chile.png';
   }
+
+
+  
 
   // Don't worry if you don't understand this, it's not part of Promises.
   // We are using the JavaScript Module Pattern to enable unit testing of
